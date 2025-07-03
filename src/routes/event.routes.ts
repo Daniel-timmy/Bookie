@@ -27,3 +27,7 @@ eventRouter.get(
 eventRouter.patch('/:id', authentication, isOwner, async(req, res, next)=>{
     await eventController.updateEvent(req, res, next)
 })
+
+eventRouter.delete('/:id', authentication, isOwner, async(req, res, next)=>{
+    await eventController.deleteEvent(req, res, next)
+})

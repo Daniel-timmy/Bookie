@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { EventService } from "../../services/event/event.service";
 import { IEvent } from "interfaces/event/event.interface";
 import { z } from 'zod';
+import { AuthRequest } from "interfaces/auth/interface.auth";
 
 const eventSchema = z.object({
   title: z.string().min(1),
@@ -16,11 +17,15 @@ interface ApiResponse<T> {
 
 export class EventController {
     constructor(private eventService: EventService){}
-
-    async createEvent(req: Request, res: Response, next: NextFunction): Promise<void>{
+    async createEvent(req: AuthRequest, res: Response, next: NextFunction): Promise<void>{
         try {
             const eventData: IEvent = req.body
-            const validatedData = eventSchema.parse(req.body);
+            if (!req.user){
+                res.status(401).json({ message: 'Unauthorized' });
+                return;
+            }
+            eventData.user = req.user;
+            // const validatedData = eventSchema.parse(req.body);
             const event = await this.eventService.create(eventData);
             res.status(201).json({status: "success", data: event});
         } catch (error) {
