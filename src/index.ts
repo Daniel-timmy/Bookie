@@ -32,16 +32,6 @@ const startServer = async () => {
     
   console.error("Error during Data Source initialization:", error);
   }
-  
 }
 
-
-
-// AppDataSource.initialize().then(() => {
-//   app.listen(PORT, async () => {
-//     console.log(`Server is running on port ${PORT}`);
-//   });
-// }).catch((error) => {
-//   console.error("Error during Data Source initialization:", error);
-// });
 startServer()
